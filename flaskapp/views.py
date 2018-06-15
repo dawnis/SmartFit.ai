@@ -70,11 +70,16 @@ def smart_mirror(imgpath):
     #time.sleep(3)
     scores = [similarity_function(feature_vector_main, partner) for partner in allFeatures]
     closest = np.argsort(np.array(scores))
+    match = {}
     for idx, x in enumerate(closest[:6]):
         keyname = deepKeys[x]
         image = rgb_image_bounding_box("/".join([fullpath_to_data, keyname]), deepDict[keyname])
-        cv2.imwrite('flaskapp/static/images/match{:03d}.png'.format(idx + 1), image)
-    return render_template("mirror_display.html", title="Smart Mirror App")
+        writepath = os.path.join('flaskapp/static', keyname)
+        if not os.path.exists(os.path.dirname(writepath)):
+            os.makedirs(os.path.dirname(writepath))
+        cv2.imwrite(writepath, image)
+        match.update({"location{:02d}".format(idx+1) : keyname})
+    return render_template("mirror_display.html", title="Smart Mirror App", match = match)
 
 
 # flask functions .getJSON, {{_url_for...}}

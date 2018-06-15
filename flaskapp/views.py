@@ -83,7 +83,7 @@ def smart_mirror(imgpath):
 def upload_image():
     root = Tk()
     root.update()
-    root.img_path = askopenfilename(title="Choose an image")
+    root.img_path = askopenfilename(initialdir = 'flaskapp/static/images/', title="Choose an image")
     print(root.img_path)
     root.destroy()
     relative_path = os.path.relpath(root.img_path, "flaskapp")

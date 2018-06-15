@@ -42,7 +42,7 @@ def rgb_image_bounding_box(image_full_path, boundingBox):
     """
     imgraw = cv2.imread(image_full_path, 1)
     imgcrop = imgraw[boundingBox[1]:boundingBox[3], boundingBox[0]:boundingBox[2], :]
-    imgcrop = cv2.cvtColor(imgcrop, cv2.COLOR_BGR2RGB)
+    #imgcrop = cv2.cvtColor(imgcrop, cv2.COLOR_BGR2RGB)
     return imgcrop
 
 

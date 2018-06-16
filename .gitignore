@@ -1,0 +1,13 @@
+models
+
+flaskapp/static/images
+flaskapp/static/img
+flaskapp/models
+flaskapp/labels
+
+.ignore
+
+.idea
+
+.venv
+

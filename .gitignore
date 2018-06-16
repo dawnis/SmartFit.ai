@@ -1,9 +1,8 @@
-models
+flaskapp/static/images/**
 
-flaskapp/static/images
-flaskapp/static/img
+flaskapp/static/img/**
 
-labels
+labels/**
 
 .ignore
 

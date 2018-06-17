@@ -20,7 +20,7 @@ global deepKeys
 deepKeys = [keyname for keyname in deepDict.keys()]
 
 global allFeatures
-allFeatures = np.load("models/current_feature_vector.npy")
+allFeatures = np.load("features/current_feature_vector.npy")
 
 
 #graph = tf.get_default_graph()

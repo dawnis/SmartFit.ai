@@ -4,6 +4,12 @@ flaskapp/static/img/**
 
 labels/**
 
+features/**
+
+flaskapp/__pycache__/**
+
+models/*.npy
+
 .ignore
 
 .idea

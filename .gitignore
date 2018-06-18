@@ -10,6 +10,8 @@ flaskapp/__pycache__/**
 
 models/*.npy
 
+models/decoder**
+
 .ignore
 
 .idea

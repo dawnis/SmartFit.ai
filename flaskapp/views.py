@@ -35,6 +35,11 @@ def my_load_model():
 
 
 def encoder_predict(image_full_path):
+    """
+    returns full feature vector (assumes image is already bounded)
+    :param image_full_path: full path to image (in Flask App)
+    :return:
+    """
     # global encoder
     imgraw = cv2.imread(image_full_path, 1)
     imgcrop = imgraw
@@ -47,7 +52,14 @@ def encoder_predict(image_full_path):
     fd = hog(grayscale, orientations=4, pixels_per_cell=(16, 16), cells_per_block=(1, 1), visualise=False)
     fd = fd / np.max(fd)
     encoded_image = encoded_image / np.max(encoded_image)
-    return np.concatenate((fd, encoded_image.ravel()))
+    hsv_img = cv2.cvtColor(imgcrop, cv2.COLOR_BGR2HSV)
+    hsv_hlist = []
+    num_h_elements = np.prod(hsv_img.shape[:2])
+    for channel, (range, nbins) in enumerate(zip([180,255,255],[10,4,4])): #unsure if ch1 is 180 or 360
+        hsv_h, bins = np.histogram(hsv_img[:,:,channel], range=(0, range), bins=nbins)
+        hsv_hlist.append(hsv_h/num_h_elements)
+    hsv = np.concatenate(hsv_hlist, axis=0)
+    return np.concatenate((fd, hsv, encoded_image.ravel()))
 
 
 @app.route('/')

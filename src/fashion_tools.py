@@ -181,7 +181,6 @@ def category_cloth_img(cloth_img_txt):
             linecount += 1
     return categoryDict
 
-
 def DeepFashion(clothing_to_retrieve):
     """
     Returns dictionary where key is the image file name and the entry is the bounding box

@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 from skimage.feature import hog
 from joblib import Parallel, delayed
-
+import pandas as pd
 
 def fashion_similarity(input_txt, features, keys):
     """
@@ -147,7 +147,7 @@ def generate_features(boxDict, img_directory, encoder):
 
 def cloth_category(cloth_txt):
     """
-    Creates dictionary with name and numeric representation
+    Creates dictionary with name and numeric representation of which clothing category (e.g. tops, shorts, etc.)
     :param cloth_txt:
     :return:
     """
@@ -180,6 +180,26 @@ def category_cloth_img(cloth_img_txt):
                 categoryDict.update({line_attributes[0]: int(line_attributes[-1])})
             linecount += 1
     return categoryDict
+
+def DeepFashion_Attributes(ClothCategory, img_attr_df):
+    """
+    Returns the attribute vectors associated with clothes in a particular category
+    :param ClothCategory: the name of the cateogry
+    :param img_attr_df: a pandas data frame (loaded from sparse save) of all attribute vectors
+    :return:
+    """
+    cloth_category_txt = "labels/list_category_cloth.txt"
+    cloth_img = "labels/list_category_img.txt"
+    clothDict = cloth_category(cloth_category_txt)
+    imgDict = category_cloth_img(cloth_img)
+    #its putting in the index, not value!
+    imgDF = pd.DataFrame.from_dict(imgDict, orient="index")
+    imgDF.columns = ["ClothType"]
+    img_attr_df = pd.concat([img_attr_df, imgDF], axis=1)
+    clothIdx = clothDict[ClothCategory][0] + 1
+    img_attr_df.drop(index = img_attr_df.index[img_attr_df["ClothType"] != clothIdx], inplace=True)
+    img_attr_df.drop(columns = "ClothType", inplace=True)
+    return img_attr_df
 
 def DeepFashion(clothing_to_retrieve):
     """

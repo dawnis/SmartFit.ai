@@ -71,15 +71,11 @@ def index():
 
 @app.route('/mirror/<path:imgpath>')
 def smart_mirror(imgpath):
-    # global encoder
-    print(imgpath)
     fullpath_to_data = "/home/dawnis/Data/SmartMirror/DeepFashion_Data"
-    #encoder = load_model("models/encoder_model_current.h5")
-    #encoder.load_weights("models/encoder_model_weights_current.h5")
     aimg = os.path.join("flaskapp", imgpath)
-    #feature_vector_main = image_to_feature(aimg, [], encoder)
+    imgpath_breakdown = imgpath.split(os.sep)
+    imgfile = {"filepath": os.sep.join(imgpath_breakdown[1:]) }
     feature_vector_main = encoder_predict(aimg)
-    #time.sleep(3)
     scores = [similarity_function(feature_vector_main, partner) for partner in allFeatures]
     closest = np.argsort(np.array(scores))
     match = {}
@@ -91,7 +87,7 @@ def smart_mirror(imgpath):
             os.makedirs(os.path.dirname(writepath))
         cv2.imwrite(writepath, image)
         match.update({"location{:02d}".format(idx+1) : keyname})
-    return render_template("mirror_display.html", title="Smart Mirror App", match = match)
+    return render_template("mirror_display.html", title="Smart Mirror App", match = match, imgfile=imgfile)
 
 
 # flask functions .getJSON, {{_url_for...}}

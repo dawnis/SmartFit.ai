@@ -79,7 +79,7 @@ def smart_mirror(imgpath):
     scores = [similarity_function(feature_vector_main, partner) for partner in allFeatures]
     closest = np.argsort(np.array(scores))
     match = {}
-    for idx, x in enumerate(closest[:6]):
+    for idx, x in enumerate(closest[:4]):
         keyname = deepKeys[x]
         image = rgb_image_bounding_box("/".join([fullpath_to_data, keyname]), deepDict[keyname])
         writepath = os.path.join('flaskapp/static', keyname)

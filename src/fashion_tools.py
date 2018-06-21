@@ -47,15 +47,29 @@ def similarity_function_old(feature1, feature2):
     return 1 - feature1.dot(feature2) / (f1Magnitude * f2Magnitude)
 
 
-def rgb_image_bounding_box(image_full_path, boundingBox, convert_bgr=False):
+def rgb_image_bounding_box(image_full_path, boundingBox, convert_bgr=False, autocrop=False):
     """
-    Returns the rgb image cropped by bounding box
-    :param image_full_path:
-    :param bounding_box:
+    Returns bounded rgb image from file. Options for cropping and converting to rgb
+    :param image_full_path: full path of image on disk
+    :param boundingBox: 4 element vector [y1 x1 y2 x2]
+    :param convert_bgr: convert from bgr to rgb
+    :param autocrop: if True (and bounding box is empty) crops to shortest dimension
     :return:
     """
     imgraw = cv2.imread(image_full_path, 1)
-    imgcrop = imgraw[boundingBox[1]:boundingBox[3], boundingBox[0]:boundingBox[2], :]
+    imgshape = imgraw.shape
+    if len(boundingBox) > 0:
+        imgcrop = imgraw[boundingBox[1]:boundingBox[3], boundingBox[0]:boundingBox[2], :]
+    elif autocrop:
+        mindim = np.argmin(imgraw.shape[:1])
+        cropdim = np.mod(mindim+1, 2)
+        boundingBox = [0, 0, imgshape[0], imgshape[1]]
+        xtra = np.abs(imgshape[0] - imgshape[1])
+        boundingBox[cropdim] = xtra//2
+        boundingBox[cropdim + 2] -= xtra//2
+        imgcrop = imgraw[boundingBox[1]:boundingBox[3], boundingBox[0]:boundingBox[2], :]
+    else:
+        imgcrop = imgraw
     if convert_bgr:
         imgcrop = cv2.cvtColor(imgcrop, cv2.COLOR_BGR2RGB)
     return imgcrop

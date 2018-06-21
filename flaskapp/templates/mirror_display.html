@@ -55,11 +55,10 @@
     <section class="jumbotron text-center">
         <div class="container">
             <h1 class="jumbotron-heading">Smart Mirror Fitting Room</h1>
-            <p class="lead text-muted">.</p>
-             <img src="{{url_for('static', filename = imgfile.filepath )}}", height="400" >
+             <img src="{{url_for('static', filename = imgfile.filepath )}}", height="400", border="5">
             <p>
-                <a href="#" class="btn btn-primary my-2">Find Similar Fashions!</a>
-                <a href="#" class="btn btn-secondary my-2">Secondary action</a>
+                <a href="#" class="btn btn-large btn-primary my-2">Take a photo!</a>
+                <a href="#" class="btn btn-large btn-secondary my-2">Try it On!</a>
             </p>
         </div>
     </section>
@@ -69,9 +68,9 @@
 
             <div class="row">
                 {% for filelocation in match.keys() %}
-                <div class="col-md-4">
-                    <div class="card mb-4 box-shadow">
-                        <img class="card-img-top" src="{{ url_for('static', filename=match[filelocation]) }} ", alt="filelocation">
+                <div class="col-md-3">
+                    <div class="card mb-3 box-shadow">
+                        <img class="card-img-top" src="{{ url_for('static', filename=match[filelocation]) }} ", alt="filelocation", height="200">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">

@@ -4,6 +4,7 @@ from skimage.feature import hog
 from joblib import Parallel, delayed
 import pandas as pd
 
+
 def fashion_similarity(input_txt, features, keys):
     """
     Computes the similarity metric between input and all features and returns the keys that are
@@ -27,15 +28,18 @@ def similarity_function(feature1, feature2):
     :param feature2: feature 2
     :return: similarity score
     """
-    #256 HOG, 18 HSV, 512 Encoder
-    salient1 = feature1[256:256+18].copy() #be careful not to modify feature vector in place
-    salient2 = feature2[256:256+18].copy()
-    feature1 =feature1.copy()
-    feature2 = feature2.copy()
-    #feature1[:] = 0
-    #feature2[:] = 0
-    feature1[256:256+18] = salient1*10
-    feature2[256:256+18] = salient2*10
+    # 256 HOG, 18 HSV, 512 Encoder
+    # weight color more if using the full vector
+    if len(feature1) > 785:
+        salient1 = feature1[256:256 + 18].copy()  # be careful not to modify feature vector in place
+        salient2 = feature2[256:256 + 18].copy()
+        feature1 = feature1.copy()
+        feature2 = feature2.copy()
+        # feature1[:] = 0
+        # feature2[:] = 0
+        feature1[256:256 + 18] = salient1 * 10
+        feature2[256:256 + 18] = salient2 * 10
+
     abs_distance = np.abs(feature1 - feature2)
     return np.sum(abs_distance)
 
@@ -66,8 +70,8 @@ def rgb_image_bounding_box(image_full_path, boundingBox, convert_bgr=False, auto
         cropdim = mindim
         boundingBox = [0, 0, imgshape[1], imgshape[0]]
         xtra = np.abs(imgshape[0] - imgshape[1])
-        boundingBox[cropdim] = xtra//2
-        boundingBox[cropdim + 2] -= xtra//2
+        boundingBox[cropdim] = xtra // 2
+        boundingBox[cropdim + 2] -= xtra // 2
         imgcrop = imgraw[boundingBox[1]:boundingBox[3], boundingBox[0]:boundingBox[2], :]
     else:
         imgcrop = imgraw
@@ -75,6 +79,7 @@ def rgb_image_bounding_box(image_full_path, boundingBox, convert_bgr=False, auto
     if convert_bgr:
         imgcrop = cv2.cvtColor(imgcrop, cv2.COLOR_BGR2RGB)
     return imgcrop
+
 
 # def image_to_feature_ae(image_full_path, boundingBox, encoder):
 #     """version of image to feature that only has encoder in it"""
@@ -127,9 +132,9 @@ def image_to_feature(image_full_path, boundingBox, encoder, features_to_use):
     hsv_img = cv2.cvtColor(imgcrop, cv2.COLOR_BGR2HSV)
     hsv_hlist = []
     num_h_elements = np.prod(hsv_img.shape[:2])
-    for channel, (range, nbins) in enumerate(zip([180,255,255],[10,4,4])): #unsure if ch1 is 180 or 360
-        hsv_h, bins = np.histogram(hsv_img[:,:,channel], range=(0, range), bins=nbins)
-        hsv_hlist.append(hsv_h/num_h_elements)
+    for channel, (range, nbins) in enumerate(zip([180, 255, 255], [10, 4, 4])):  # unsure if ch1 is 180 or 360
+        hsv_h, bins = np.histogram(hsv_img[:, :, channel], range=(0, range), bins=nbins)
+        hsv_hlist.append(hsv_h / num_h_elements)
     hsv = np.concatenate(hsv_hlist, axis=0)
     if features_to_use == "All":
         fv = np.concatenate((fd, hsv, encoded_image.ravel()))
@@ -138,7 +143,7 @@ def image_to_feature(image_full_path, boundingBox, encoder, features_to_use):
     elif features_to_use == "hog":
         fv = fd
     elif features_to_use == "hsv":
-        fv=hsv
+        fv = hsv
     return fv
 
 
@@ -192,6 +197,7 @@ def category_cloth_img(cloth_img_txt):
             linecount += 1
     return categoryDict
 
+
 def DeepFashion_Attributes(ClothCategory, img_attr_df):
     """
     Returns the attribute vectors associated with clothes in a particular category
@@ -203,14 +209,15 @@ def DeepFashion_Attributes(ClothCategory, img_attr_df):
     cloth_img = "labels/list_category_img.txt"
     clothDict = cloth_category(cloth_category_txt)
     imgDict = category_cloth_img(cloth_img)
-    #its putting in the index, not value!
+    # its putting in the index, not value!
     imgDF = pd.DataFrame.from_dict(imgDict, orient="index")
     imgDF.columns = ["ClothType"]
     img_attr_df = pd.concat([img_attr_df, imgDF], axis=1)
     clothIdx = clothDict[ClothCategory][0] + 1
-    img_attr_df.drop(index = img_attr_df.index[img_attr_df["ClothType"] != clothIdx], inplace=True)
-    img_attr_df.drop(columns = "ClothType", inplace=True)
+    img_attr_df.drop(index=img_attr_df.index[img_attr_df["ClothType"] != clothIdx], inplace=True)
+    img_attr_df.drop(columns="ClothType", inplace=True)
     return img_attr_df
+
 
 def DeepFashion(clothing_to_retrieve):
     """

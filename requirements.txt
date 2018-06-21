@@ -1,0 +1,8 @@
+flask
+keras
+scikit-image
+numpy
+tensorflow
+pandas
+gunicorn
+opencv

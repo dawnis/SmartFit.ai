@@ -59,8 +59,9 @@ def rgb_image_bounding_box(image_full_path, boundingBox, convert_bgr=False, auto
     imgraw = cv2.imread(image_full_path, 1)
     imgshape = imgraw.shape
     if len(boundingBox) > 0:
-        imgcrop = imgraw[boundingBox[1]:boundingBox[3], boundingBox[0]:boundingBox[2], :]
-    elif autocrop:
+        imgraw = imgraw[boundingBox[1]:boundingBox[3], boundingBox[0]:boundingBox[2], :]
+
+    if autocrop:
         mindim = np.argmin(imgraw.shape[:1])
         cropdim = np.mod(mindim+1, 2)
         boundingBox = [0, 0, imgshape[0], imgshape[1]]
@@ -70,6 +71,7 @@ def rgb_image_bounding_box(image_full_path, boundingBox, convert_bgr=False, auto
         imgcrop = imgraw[boundingBox[1]:boundingBox[3], boundingBox[0]:boundingBox[2], :]
     else:
         imgcrop = imgraw
+
     if convert_bgr:
         imgcrop = cv2.cvtColor(imgcrop, cv2.COLOR_BGR2RGB)
     return imgcrop
@@ -112,12 +114,7 @@ def image_to_feature(image_full_path, boundingBox, encoder, features_to_use):
     :param features_to_use: either "All" for everything or, one of: "encoder", "hog", "hsv"
     :return: a feature vector of length depending on features_to_use
     """
-    imgraw = cv2.imread(image_full_path, 1)
-    # no need to convert, keras autoencoder is in BGR color mode
-    if len(boundingBox) > 0:
-        imgcrop = imgraw[boundingBox[1]:boundingBox[3], boundingBox[0]:boundingBox[2], :]
-    else:
-        imgcrop = imgraw
+    imgcrop = rgb_image_bounding_box(image_full_path, boundingBox, autocrop=True)
     imgresize = cv2.resize(imgcrop, (128, 128))
     imgresize = imgresize / 255.
     imgresize = imgresize.astype('float32')

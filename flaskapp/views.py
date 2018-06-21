@@ -80,7 +80,7 @@ def smart_mirror(imgpath):
     match = {}
     for idx, x in enumerate(closest[:4]):
         keyname = deepKeys[x]
-        image = rgb_image_bounding_box("/".join([fullpath_to_data, keyname]), deepDict[keyname])
+        image = rgb_image_bounding_box("/".join([fullpath_to_data, keyname]), deepDict[keyname], autocrop=True)
         writepath = os.path.join('flaskapp/static', keyname)
         if not os.path.exists(os.path.dirname(writepath)):
             os.makedirs(os.path.dirname(writepath))

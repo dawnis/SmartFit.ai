@@ -35,8 +35,6 @@ def similarity_function(feature1, feature2):
         salient2 = feature2[256:256 + 18].copy()
         feature1 = feature1.copy()
         feature2 = feature2.copy()
-        # feature1[:] = 0
-        # feature2[:] = 0
         feature1[256:256 + 18] = salient1 * 10
         feature2[256:256 + 18] = salient2 * 10
 

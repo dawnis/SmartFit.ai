@@ -57,14 +57,14 @@ def rgb_image_bounding_box(image_full_path, boundingBox, convert_bgr=False, auto
     :return:
     """
     imgraw = cv2.imread(image_full_path, 1)
-    imgshape = imgraw.shape
     if len(boundingBox) > 0:
         imgraw = imgraw[boundingBox[1]:boundingBox[3], boundingBox[0]:boundingBox[2], :]
 
     if autocrop:
-        mindim = np.argmin(imgraw.shape[:1])
-        cropdim = np.mod(mindim+1, 2)
-        boundingBox = [0, 0, imgshape[0], imgshape[1]]
+        imgshape = imgraw.shape
+        mindim = np.argmin([imgshape[0], imgshape[1]])
+        cropdim = mindim
+        boundingBox = [0, 0, imgshape[1], imgshape[0]]
         xtra = np.abs(imgshape[0] - imgshape[1])
         boundingBox[cropdim] = xtra//2
         boundingBox[cropdim + 2] -= xtra//2

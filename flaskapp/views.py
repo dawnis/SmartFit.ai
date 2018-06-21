@@ -41,7 +41,7 @@ def encoder_predict(image_full_path):
     :return:
     """
     # global encoder
-    imgcrop = rgb_image_bounding_box(image_full_path, [], autocrop=True)
+    imgcrop = rgb_image_bounding_box(image_full_path, [], autocrop=False)#important, autocrop True can affect performance
     imgresize = cv2.resize(imgcrop, (128, 128))
     imgresize = imgresize / 255.
     imgresize = imgresize.astype('float32')

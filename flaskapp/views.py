@@ -41,8 +41,7 @@ def encoder_predict(image_full_path):
     :return:
     """
     # global encoder
-    imgraw = cv2.imread(image_full_path, 1)
-    imgcrop = imgraw
+    imgcrop = rgb_image_bounding_box(image_full_path, [], autocrop=True)
     imgresize = cv2.resize(imgcrop, (128, 128))
     imgresize = imgresize / 255.
     imgresize = imgresize.astype('float32')

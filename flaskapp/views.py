@@ -1,15 +1,22 @@
-from flask import render_template
+from flask import render_template, request, redirect, url_for, flash
+from werkzeug.utils import secure_filename
 from flaskapp import app
-from tkinter.filedialog import askopenfilename
-from tkinter import Tk
 from skimage.feature import hog
 import os
 from src.fashion_tools import image_to_feature, DeepFashion, similarity_function, rgb_image_bounding_box
 import numpy as np
 import tensorflow as tf
 from keras.models import load_model
-import time
 import cv2
+
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+
+
+# code copied from flask.pocoo.org: uploading files (also used in upload image)
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 # global encoder
 # decoder = load_model("models/decoder_model_current.h5")
@@ -23,10 +30,10 @@ global allFeatures
 allFeatures = np.load("features/current_feature_vector.npy")
 
 
-#graph = tf.get_default_graph()
+# graph = tf.get_default_graph()
 
 def my_load_model():
-    os.environ["CUDA_VISIBLE_DEVICES"]=""
+    os.environ["CUDA_VISIBLE_DEVICES"] = ""
     global encoder
     encoder = load_model("models/encoder_model_current.h5")
     encoder.load_weights("models/encoder_model_weights_current.h5")
@@ -41,7 +48,8 @@ def encoder_predict(image_full_path):
     :return:
     """
     # global encoder
-    imgcrop = rgb_image_bounding_box(image_full_path, [], autocrop=False)#important, autocrop True can affect performance
+    imgcrop = rgb_image_bounding_box(image_full_path, [],
+                                     autocrop=False)  # important, autocrop True can affect performance
     imgresize = cv2.resize(imgcrop, (128, 128))
     imgresize = imgresize / 255.
     imgresize = imgresize.astype('float32')
@@ -54,9 +62,9 @@ def encoder_predict(image_full_path):
     hsv_img = cv2.cvtColor(imgcrop, cv2.COLOR_BGR2HSV)
     hsv_hlist = []
     num_h_elements = np.prod(hsv_img.shape[:2])
-    for channel, (range, nbins) in enumerate(zip([180,255,255],[10,4,4])): #unsure if ch1 is 180 or 360
-        hsv_h, bins = np.histogram(hsv_img[:,:,channel], range=(0, range), bins=nbins)
-        hsv_hlist.append(hsv_h/num_h_elements)
+    for channel, (range, nbins) in enumerate(zip([180, 255, 255], [10, 4, 4])):  # unsure if ch1 is 180 or 360
+        hsv_h, bins = np.histogram(hsv_img[:, :, channel], range=(0, range), bins=nbins)
+        hsv_hlist.append(hsv_h / num_h_elements)
     hsv = np.concatenate(hsv_hlist, axis=0)
     return np.concatenate((fd, hsv, encoded_image.ravel()))
 
@@ -64,16 +72,15 @@ def encoder_predict(image_full_path):
 @app.route('/')
 @app.route('/index')
 def index():
-    imgfile = {"filepath": "static/images/go-away-oscar-the-grouch-t-shirt.master.png"}
+    imgfile = {"filepath": "images/go-away-oscar-the-grouch-t-shirt.master.png"}
     return render_template("index.html", title="Home", imgfile=imgfile)
 
 
 @app.route('/mirror/<path:imgpath>')
 def smart_mirror(imgpath):
     fullpath_to_data = "/home/dawnis/Data/SmartMirror/DeepFashion_Data"
-    aimg = os.path.join("flaskapp", imgpath)
-    imgpath_breakdown = imgpath.split(os.sep)
-    imgfile = {"filepath": os.sep.join(imgpath_breakdown[1:]) }
+    aimg = os.path.join("flaskapp/static", imgpath)
+    imgfile = {"filepath": imgpath}
     feature_vector_main = encoder_predict(aimg)
     scores = [similarity_function(feature_vector_main, partner) for partner in allFeatures]
     closest = np.argsort(np.array(scores))
@@ -85,19 +92,29 @@ def smart_mirror(imgpath):
         if not os.path.exists(os.path.dirname(writepath)):
             os.makedirs(os.path.dirname(writepath))
         cv2.imwrite(writepath, image)
-        match.update({"location{:02d}".format(idx+1) : keyname})
-    return render_template("mirror_display.html", title="Smart Mirror App", match = match, imgfile=imgfile)
+        match.update({"location{:02d}".format(idx + 1): keyname})
+    return render_template("mirror_display.html", title="Smart Mirror App", match=match, imgfile=imgfile)
 
 
 # flask functions .getJSON, {{_url_for...}}
 
-@app.route('/upload')
+@app.route('/upload', methods=['GET', 'POST'])
 def upload_image():
-    root = Tk()
-    root.update()
-    root.img_path = askopenfilename(initialdir = 'flaskapp/static/images/', title="Choose an image")
-    print(root.img_path)
-    root.destroy()
-    relative_path = os.path.relpath(root.img_path, "flaskapp")
-    imgfile = {'filepath': relative_path}
-    return render_template("index.html", title="Home", imgfile=imgfile)
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'img_file_path' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['img_file_path']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            imgfile = {"filepath": os.path.join("images",filename)}
+            return render_template("index.html", title="Home", imgfile=imgfile)
+
+    return

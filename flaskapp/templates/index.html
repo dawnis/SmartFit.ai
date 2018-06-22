@@ -33,10 +33,14 @@
     <main role="main" class="inner cover">
         <h1 class="cover-heading">Smart Mirror</h1>
         <p class="lead">Smart Mirror allows you to try on clothes and discover new fashions without ever entering the changing room. </p>
-            <img src="{{imgfile.filepath}}", height="400" >
+            <img src="{{url_for('static', filename = imgfile.filepath)}}", height="400" >
         <p>{{imgfile.filepath}}</p>
             <p class="lead">
-                <a href="/upload" class="btn btn-lg btn-secondary"> Upload Image</a>
+               <!--  <a href="/upload" class="btn btn-lg btn-secondary"> Upload Image</a> -->
+                <form action="/upload" method="POST" enctype="multipart/form-data">
+                <input type="file" name="img_file_path">
+                <input type="submit" value="Upload">
+                </form>
                 <a href="{{ url_for('smart_mirror', imgpath=imgfile.filepath) }}" class="btn btn-lg btn-secondary"> Fitting Room</a>
             </p>
     </main>

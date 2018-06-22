@@ -12,6 +12,8 @@ models/*.npy
 
 models/decoder**
 
+z_training_data/**
+
 .ignore
 
 .idea

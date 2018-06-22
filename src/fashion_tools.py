@@ -108,7 +108,7 @@ def rgb_image_bounding_box(image_full_path, boundingBox, convert_bgr=False, auto
 #     return fd
 
 
-def image_to_feature(image_full_path, boundingBox, encoder, features_to_use):
+def image_to_feature(image_full_path, boundingBox, encoder, features_to_use, autocrop=False):
     """
     Converts cropped image of clothing to a feature vector
     :param image_full_path: Full path to fashion image
@@ -117,7 +117,7 @@ def image_to_feature(image_full_path, boundingBox, encoder, features_to_use):
     :param features_to_use: either "All" for everything or, one of: "encoder", "hog", "hsv"
     :return: a feature vector of length depending on features_to_use
     """
-    imgcrop = rgb_image_bounding_box(image_full_path, boundingBox, autocrop=True)
+    imgcrop = rgb_image_bounding_box(image_full_path, boundingBox, autocrop=autocrop)
     imgresize = cv2.resize(imgcrop, (128, 128))
     imgresize = imgresize / 255.
     imgresize = imgresize.astype('float32')
@@ -195,6 +195,23 @@ def category_cloth_img(cloth_img_txt):
             linecount += 1
     return categoryDict
 
+def category_cloth_attr(cloth_img_txt):
+    """
+     returns category of each clothing image
+    :param cloth_img_txt:
+    :return:
+    """
+    categoryDict = {}
+    linecount = 0
+    with open(cloth_img_txt, 'r') as file:
+        for linetext in file:
+            # linetext = file.readline()
+            line = linetext.rstrip(' \n')
+            if linecount > 1:
+                line_attributes = line.split("  ")
+                categoryDict.update({line_attributes[0]: int(line_attributes[-1])})
+            linecount += 1
+    return categoryDict
 
 def DeepFashion_Attributes(ClothCategory, img_attr_df):
     """

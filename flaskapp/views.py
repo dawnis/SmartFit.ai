@@ -22,13 +22,16 @@ def allowed_file(filename):
 # decoder = load_model("models/decoder_model_current.h5")
 # decoder.load_weights("models/decoder_model_weights_current.h5")
 
-deepDict = DeepFashion("Top")
+#deepDict = DeepFashion("Top")
+global z_img_dir
+z_img_dir = "/home/dawnis/Data/SmartMirror_Zolonda_Tops/womens_tops_no_model"
 global deepKeys
-deepKeys = [keyname for keyname in deepDict.keys()]
+#deepKeys = [keyname for keyname in deepDict.keys()]
+deepKeys = [img for img in os.listdir(z_img_dir)]
 
 global allFeatures
-allFeatures = np.load("features/current_feature_vector.npy")
-
+#allFeatures = np.load("features/current_feature_vector.npy")
+allFeatures = np.load("features/zolonda_full_feature_vectors.npy")
 
 # graph = tf.get_default_graph()
 
@@ -78,7 +81,6 @@ def index():
 
 @app.route('/mirror/<path:imgpath>')
 def smart_mirror(imgpath):
-    fullpath_to_data = "/home/dawnis/Data/SmartMirror/DeepFashion_Data"
     aimg = os.path.join("flaskapp/static", imgpath)
     imgfile = {"filepath": imgpath}
     feature_vector_main = encoder_predict(aimg)
@@ -87,12 +89,8 @@ def smart_mirror(imgpath):
     match = {}
     for idx, x in enumerate(closest[:4]):
         keyname = deepKeys[x]
-        image = rgb_image_bounding_box("/".join([fullpath_to_data, keyname]), [], autocrop=True)
-        writepath = os.path.join('flaskapp/static', keyname)
-        if not os.path.exists(os.path.dirname(writepath)):
-            os.makedirs(os.path.dirname(writepath))
-        cv2.imwrite(writepath, image)
-        match.update({"location{:02d}".format(idx + 1): keyname})
+        match.update({"location{:02d}".format(idx + 1): os.path.join(z_img_dir, keyname)})
+        #print(keyname)
     return render_template("mirror_display.html", title="Smart Mirror App", match=match, imgfile=imgfile)
 
 

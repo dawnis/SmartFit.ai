@@ -23,8 +23,7 @@ def allowed_file(filename):
 # decoder.load_weights("models/decoder_model_weights_current.h5")
 
 #deepDict = DeepFashion("Top")
-global z_img_dir
-z_img_dir = "/home/dawnis/Data/SmartMirror_Zolonda_Tops/womens_tops_no_model"
+z_img_dir = "/home/ubuntu/smartfit/flaskapp/static/z_img/womenless"
 global deepKeys
 #deepKeys = [keyname for keyname in deepDict.keys()]
 deepKeys = [img for img in os.listdir(z_img_dir)]
@@ -81,6 +80,7 @@ def index():
 
 @app.route('/mirror/<path:imgpath>')
 def smart_mirror(imgpath):
+    z_img_dir = "z_img/womenless"
     aimg = os.path.join("flaskapp/static", imgpath)
     imgfile = {"filepath": imgpath}
     feature_vector_main = encoder_predict(aimg)

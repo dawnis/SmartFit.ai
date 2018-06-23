@@ -22,23 +22,23 @@ def allowed_file(filename):
 # decoder = load_model("models/decoder_model_current.h5")
 # decoder.load_weights("models/decoder_model_weights_current.h5")
 
-#deepDict = DeepFashion("Top")
-z_img_dir = "/home/ubuntu/smartfit/flaskapp/static/z_img/womenless"
+deepDict = DeepFashion("Top")
+#z_img_dir = "/home/ubuntu/smartfit/flaskapp/static/z_img/womenless"
 global deepKeys
-#deepKeys = [keyname for keyname in deepDict.keys()]
-deepKeys = [img for img in os.listdir(z_img_dir)]
+deepKeys = [keyname for keyname in deepDict.keys()]
+#deepKeys = [img for img in os.listdir(z_img_dir)]
 
 global allFeatures
-#allFeatures = np.load("features/current_feature_vector.npy")
-allFeatures = np.load("features/zolonda_full_feature_vectors.npy")
+allFeatures = np.load("features/u_current_feature_vector.npy")
+#allFeatures = np.load("features/zolonda_full_feature_vectors.npy")
 
 # graph = tf.get_default_graph()
 
 def my_load_model():
     os.environ["CUDA_VISIBLE_DEVICES"] = ""
     global encoder
-    encoder = load_model("models/encoder_model_current.h5")
-    encoder.load_weights("models/encoder_model_weights_current.h5")
+    encoder = load_model("models/u_encoder_model_current.h5")
+    encoder.load_weights("models/u_encoder_model_weights_current.h5")
     global graph
     graph = tf.get_default_graph()
 
@@ -80,7 +80,8 @@ def index():
 
 @app.route('/mirror/<path:imgpath>')
 def smart_mirror(imgpath):
-    z_img_dir = "z_img/womenless"
+    #z_img_dir = "z_img/womenless"
+    z_img_dir = "deepFashion"
     aimg = os.path.join("flaskapp/static", imgpath)
     imgfile = {"filepath": imgpath}
     feature_vector_main = encoder_predict(aimg)

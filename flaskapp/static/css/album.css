@@ -2,6 +2,12 @@
   --jumbotron-padding-y: 3rem;
 }
 
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
 .jumbotron {
   padding-top: var(--jumbotron-padding-y);
   padding-bottom: var(--jumbotron-padding-y);

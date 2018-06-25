@@ -27,7 +27,7 @@
         </div>
         <div class="row ">
 
-            <div class="col-sm-8 gutter=-5">
+            <div class="col-sm-6 gutter=-5">
                 <img src="{{url_for('static', filename = imgfile.filepath)}}" , height="400">
             </div>
 
@@ -41,13 +41,23 @@
                 </a>
             </div>
 
-            <div class="col-sm-2 gutter=-5">
+            <div class="col-sm-2">
                 <a href="{{ url_for('smart_mirror', imgpath='images/simple_blue.png') }}">
                 <img src=" {{url_for('static', filename = 'images/simple_blue.png')}}" , height="200">
                 </a>
 
-                <a href="{{ url_for('smart_mirror', imgpath='images/elegant_black_white_throw_over.png') }}">
-                <img src="{{url_for('static', filename = 'images/elegant_black_white_throw_over.png')}}" , height="200">
+                <a href="{{ url_for('smart_mirror', imgpath='images/black_white_dots.png') }}">
+                <img src="{{url_for('static', filename = 'images/black_white_dots.png')}}" , height="200">
+                </a>
+            </div>
+
+            <div class="col-sm-2 gutter=-5">
+                <a href="{{ url_for('smart_mirror', imgpath='images/simple_white.png') }}">
+                    <img src=" {{url_for('static', filename = 'images/simple_white.png')}}" , height="200">
+                </a>
+
+                <a href="{{ url_for('smart_mirror', imgpath='images/simple_black.png') }}">
+                    <img src="{{url_for('static', filename = 'images/simple_black.png')}}" , height="201">
                 </a>
             </div>
         </div>

@@ -68,13 +68,14 @@ def encoder_predict(image_full_path):
         hsv_h, bins = np.histogram(hsv_img[:, :, channel], range=(0, range), bins=nbins)
         hsv_hlist.append(hsv_h / num_h_elements)
     hsv = np.concatenate(hsv_hlist, axis=0)
+    hsv *= 10 #matches the image_to_feature function
     return np.concatenate((fd, hsv, encoded_image.ravel()))
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-    imgfile = {"filepath": "images/go-away-oscar-the-grouch-t-shirt.master.png"}
+    imgfile = {"filepath": "images/FR1628RED01_A.jpg"}
     return render_template("index.html", title="Home", imgfile=imgfile)
 
 
@@ -87,12 +88,14 @@ def smart_mirror(imgpath):
     feature_vector_main = encoder_predict(aimg)
     scores = [similarity_function(feature_vector_main, partner) for partner in allFeatures]
     closest = np.argsort(np.array(scores))
-    match = {}
-    for idx, x in enumerate(closest[:4]):
+    match, description = {}, {}
+    for idx, x in enumerate(closest[:20]):
         keyname = deepKeys[x]
+        keytype = keyname.split(os.sep)[1]
         match.update({"location{:02d}".format(idx + 1): os.path.join(z_img_dir, keyname)})
-        #print(keyname)
-    return render_template("mirror_display.html", title="Smart Mirror App", match=match, imgfile=imgfile)
+        keytype = " ".join(keytype.split("_")[:-1])
+        description.update( {"location{:02d}".format(idx+1): keytype})
+    return render_template("mirror_display.html", title="Smart Mirror App", match=match, imgfile=imgfile, description=description)
 
 
 # flask functions .getJSON, {{_url_for...}}

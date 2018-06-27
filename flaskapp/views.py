@@ -1,9 +1,10 @@
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, flash, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
+from shutil import copyfile
 from flaskapp import app
 from skimage.feature import hog
 import os
-from src.fashion_tools import image_to_feature, DeepFashion, similarity_function, rgb_image_bounding_box
+from src.fashion_tools import DeepFashion, similarity_function, rgb_image_bounding_box
 import numpy as np
 import tensorflow as tf
 from keras.models import load_model
@@ -27,7 +28,7 @@ deepDict = DeepFashion("Top")
 zDict = pickle.load(open("/home/ubuntu/smartfit/models/zdirectory.p", "rb"))
 global deepKeys
 # deepKeys = [keyname for keyname in deepDict.keys()]
-deepKeys = [os.sep.join(['womenless',zDict[img]]) for img in zDict.keys()]
+deepKeys = [os.sep.join(['womenless', zDict[img]]) for img in zDict.keys()]
 
 global allFeatures
 # allFeatures = np.load("features/u_current_feature_vector.npy")
@@ -84,7 +85,7 @@ def index():
 @app.route('/mirror/<path:imgpath>')
 def smart_mirror(imgpath):
     z_img_dir = "z_img"
-    #z_img_dir = "deepFashion"
+    # z_img_dir = "deepFashion"
     aimg = os.path.join("flaskapp/static", imgpath)
     imgfile = {"filepath": imgpath}
     feature_vector_main = encoder_predict(aimg)
@@ -117,4 +118,22 @@ def upload_image():
             imgfile = {"filepath": os.path.join("images", filename)}
             return render_template("index.html", title="Home", imgfile=imgfile)
 
+    return
+
+
+# Run inference
+def infer(input_person, input_clothes, virtual_fit_output):
+    """
+    runs the inference virtual try on script for a person and clothing jpg image
+    :param input_person: full path of input_person
+    :param input_clothes: full path of input_clothes
+    :param virtual_fit_output: desired full path of output
+    :return:
+    """
+    run_smartfit = "./home/ubuntu/virtual_try-on/2d-Virtual-tryon-18B-AI.SV/run_smartfit.sh"
+    fitdirectory = "/home/ubuntu/virtual_try-on/2d-Virtual-tryon-18B-AI.SV"
+    os.system(" ".join([run_smartfit, input_person, input_clothes]))
+    # Check that files exists (i.e. smartfit didn't crash)
+    output_dir = os.sep.join([fitdirectory, 'output'])
+    copyfile(os.sep.join([output_dir, 'output.png']), virtual_fit_output)
     return

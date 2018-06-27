@@ -78,7 +78,7 @@ def encoder_predict(image_full_path):
 @app.route('/')
 @app.route('/index')
 def index():
-    imgfile = {"filepath": "images/model_landing.jpg"}
+    imgfile = {"person": "images/model_landing.jpg", "fashion": "z_img/womenless/000102_1.jpg"}
     return render_template("index.html", title="Home", imgfile=imgfile)
 
 
@@ -115,7 +115,7 @@ def upload_image():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            imgfile = {"filepath": os.path.join("images", filename)}
+            imgfile = {"person": "images/model_landing.jpg", "fashion": os.path.join("images", filename)}
             return render_template("index.html", title="Home", imgfile=imgfile)
 
     return

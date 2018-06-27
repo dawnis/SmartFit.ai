@@ -39,10 +39,10 @@
                 <h4 class="my-0 font-weight-normal">Use This Image</h4>
             </div>
             <div class="card-body">
-                <img src="{{url_for('static', filename = imgfile.filepath)}}" , height="400">
+                <img src="{{url_for('static', filename = imgfile.person)}}" , height="400">
                 <br><br><br>
                 <div class="lg-col-12">
-                    <a href="{{ url_for('smart_mirror', imgpath=imgfile.filepath) }}"
+                    <a href="{{ url_for('smart_mirror', imgpath=imgfile.fashion) }}"
                        class="btn btn-lg btn-block btn-outline-primary">
                         Fitting Room</a>
                 </div>
@@ -55,7 +55,8 @@
             <div class="card-body">
                 <div class="row">
                     <form action="/upload" method="POST" enctype="multipart/form-data">
-                        <input type="file" name="img_file_path"><br><br>
+                        <img src="{{url_for('static', filename = imgfile.fashion) height=150}}">
+                        <input type="file" name="img_file_path">
                         <input type="submit" value="Upload">
                     </form>
                 </div>

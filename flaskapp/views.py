@@ -7,7 +7,7 @@ from src.fashion_tools import image_to_feature, DeepFashion, similarity_function
 import numpy as np
 import tensorflow as tf
 from keras.models import load_model
-import cv2
+import cv2, pickle
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
@@ -23,14 +23,16 @@ def allowed_file(filename):
 # decoder.load_weights("models/decoder_model_weights_current.h5")
 
 deepDict = DeepFashion("Top")
-z_img_dir = "/home/ubuntu/smartfit/flaskapp/static/z_img/womenless"
+# z_img_dir = "/home/ubuntu/smartfit/flaskapp/static/z_img/womenless"
+zDict = pickle.load(open("/home/ubuntu/smartfit/models/zdirectory.p", "rb"))
 global deepKeys
-#deepKeys = [keyname for keyname in deepDict.keys()]
-deepKeys = [os.sep.join(['womenless',img]) for img in os.listdir(z_img_dir)]
+# deepKeys = [keyname for keyname in deepDict.keys()]
+deepKeys = [zDict[img] for img in zDict.keys()]
 
 global allFeatures
-#allFeatures = np.load("features/u_current_feature_vector.npy")
+# allFeatures = np.load("features/u_current_feature_vector.npy")
 allFeatures = np.load("features/zolonda_full_feature_vectors.npy")
+
 
 # graph = tf.get_default_graph()
 
@@ -68,7 +70,7 @@ def encoder_predict(image_full_path):
         hsv_h, bins = np.histogram(hsv_img[:, :, channel], range=(0, range), bins=nbins)
         hsv_hlist.append(hsv_h / num_h_elements)
     hsv = np.concatenate(hsv_hlist, axis=0)
-    hsv *= 10 #matches the image_to_feature function
+    hsv *= 10  # matches the image_to_feature function
     return np.concatenate((fd, hsv, encoded_image.ravel()))
 
 
@@ -91,12 +93,10 @@ def smart_mirror(imgpath):
     match = {}
     for idx, x in enumerate(closest[:20]):
         keyname = deepKeys[x]
-        #keytype = keyname.split(os.sep)[1]
+        # keytype = keyname.split(os.sep)[1]
         match.update({"location{:02d}".format(idx + 1): os.path.join(z_img_dir, keyname)})
     return render_template("mirror_display.html", title="Smart Mirror App", match=match, imgfile=imgfile)
 
-
-# flask functions .getJSON, {{_url_for...}}
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_image():
@@ -114,7 +114,7 @@ def upload_image():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            imgfile = {"filepath": os.path.join("images",filename)}
+            imgfile = {"filepath": os.path.join("images", filename)}
             return render_template("index.html", title="Home", imgfile=imgfile)
 
     return

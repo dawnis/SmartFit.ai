@@ -23,14 +23,14 @@ def allowed_file(filename):
 # decoder.load_weights("models/decoder_model_weights_current.h5")
 
 deepDict = DeepFashion("Top")
-#z_img_dir = "/home/ubuntu/smartfit/flaskapp/static/z_img/womenless"
+z_img_dir = "/home/ubuntu/smartfit/flaskapp/static/z_img/womenless"
 global deepKeys
-deepKeys = [keyname for keyname in deepDict.keys()]
-#deepKeys = [img for img in os.listdir(z_img_dir)]
+#deepKeys = [keyname for keyname in deepDict.keys()]
+deepKeys = [img for img in os.listdir(z_img_dir)]
 
 global allFeatures
-allFeatures = np.load("features/u_current_feature_vector.npy")
-#allFeatures = np.load("features/zolonda_full_feature_vectors.npy")
+#allFeatures = np.load("features/u_current_feature_vector.npy")
+allFeatures = np.load("features/zolonda_full_feature_vectors.npy")
 
 # graph = tf.get_default_graph()
 
@@ -81,8 +81,8 @@ def index():
 
 @app.route('/mirror/<path:imgpath>')
 def smart_mirror(imgpath):
-    #z_img_dir = "z_img/womenless"
-    z_img_dir = "deepFashion"
+    z_img_dir = "z_img/womenless"
+    #z_img_dir = "deepFashion"
     aimg = os.path.join("flaskapp/static", imgpath)
     imgfile = {"filepath": imgpath}
     feature_vector_main = encoder_predict(aimg)
@@ -91,10 +91,10 @@ def smart_mirror(imgpath):
     match, description = {}, {}
     for idx, x in enumerate(closest[:20]):
         keyname = deepKeys[x]
-        keytype = keyname.split(os.sep)[1]
+        #keytype = keyname.split(os.sep)[1]
         match.update({"location{:02d}".format(idx + 1): os.path.join(z_img_dir, keyname)})
-        keytype = " ".join(keytype.split("_")[:-1])
-        description.update( {"location{:02d}".format(idx+1): keytype})
+        #keytype = " ".join(keytype.split("_")[:-1])
+        #description.update( {"location{:02d}".format(idx+1): keytype})
     return render_template("mirror_display.html", title="Smart Mirror App", match=match, imgfile=imgfile, description=description)
 
 

@@ -82,12 +82,20 @@ def index():
     return render_template("index.html", title="Home", imgfile=imgfile)
 
 
-@app.route('/mirror/<path:imgpath>')
-def smart_mirror(imgpath):
+@app.route('/mirror/<path:fashion>/<path:person>')
+def smart_mirror(fashion, person):
     z_img_dir = "z_img"
     # z_img_dir = "deepFashion"
-    aimg = os.path.join("flaskapp/static", imgpath)
-    imgfile = {"filepath": imgpath}
+    aimg = os.path.join("flaskapp/static", fashion)
+    vfit_base_dir = "flaskapp/static/virtual_fit"
+    person_fname = person.split(os.sep)[-1][:-4]
+    fashion_fname = fashion.split(os.sep)[-1][:4]
+    virtual_fit_fname = "_".join([person_fname, fashion_fname]) + ".png"
+    virtual_fullpath = os.sep.join([vfit_base_dir, virtual_fit_fname])
+    if not os.exist(virtual_fullpath):
+        #TODO: JS TIMER
+        infer(fashion, person, virtual_fullpath)
+    imgfile = {"fashion": fashion, "person": person, "virtual":  virtual_fullpath}
     feature_vector_main = encoder_predict(aimg)
     scores = [similarity_function(feature_vector_main, partner) for partner in allFeatures]
     closest = np.argsort(np.array(scores))

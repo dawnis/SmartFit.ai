@@ -24,7 +24,9 @@
             <div class="row">
                 <div class="col-sm-8 col-md-7 py-4">
                     <h4 class="text-white">About</h4>
-                    <p class="text-muted">Add some information about the album below, the author, or any other background context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact information.</p>
+                    <p class="text-muted">Add some information about the album below, the author, or any other
+                        background context. Make it a few sentences long so folks can pick up some informative tidbits.
+                        Then, link them off to some social networking sites or contact information.</p>
                 </div>
                 <div class="col-sm-4 offset-md-1 py-4">
                     <h4 class="text-white">Contact</h4>
@@ -40,7 +42,11 @@
     <div class="navbar navbar-dark bg-dark box-shadow">
         <div class="container d-flex justify-content-between">
             <a href="/index" class="navbar-brand d-flex align-items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                    <circle cx="12" cy="13" r="4"></circle>
+                </svg>
                 <strong>Home</strong>
             </a>
         </div>
@@ -51,11 +57,21 @@
 
     <section class="jumbotron text-center">
         <div class="container">
-             <img src="{{url_for('static', filename = imgfile.filepath )}}", height="400", border="5">
-            <p>
-                <a href="#" class="btn btn-large btn-primary my-2">Take a photo!</a>
-                <a href="#" class="btn btn-large btn-secondary my-2">Show me more!</a>
-            </p>
+            <table>
+                <tr>
+                    <td>
+                        <img src="{{url_for('static', filename = imgfile.person )}}" , height="200" , border="5">
+
+                    <td rowspan="2">
+                        <img src="{{url_for('static', filename = imgfile.virtual )}}" , height="400" , border="5">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="{{url_for('static', filename = imgfile.fashion )}}" , height="200" , border="5">
+                    </td>
+                </tr>
+            </table>
         </div>
     </section>
 
@@ -66,7 +82,8 @@
                 {% for filelocation in match.keys() %}
                 <div class="col-md-3">
                     <div class="card mb-3 box-shadow">
-                        <img class="card-img-top" src="{{url_for('static', filename=match[filelocation])}}", alt="{{url_for('static', filename=match[filelocation])}}" >
+                        <img class="card-img-top" src="{{url_for('static', filename=match[filelocation])}}" ,
+                             alt="{{url_for('static', filename=match[filelocation])}}">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
@@ -93,7 +110,9 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
 <script src="../../assets/js/vendor/popper.min.js"></script>
 <script src="../../dist/js/bootstrap.min.js"></script>

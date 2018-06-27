@@ -77,7 +77,7 @@ def encoder_predict(image_full_path):
 @app.route('/')
 @app.route('/index')
 def index():
-    imgfile = {"filepath": "images/FR1628RED01_A.jpg"}
+    imgfile = {"filepath": "images/model_landing.jpg"}
     return render_template("index.html", title="Home", imgfile=imgfile)
 
 

@@ -93,7 +93,6 @@ def smart_mirror(imgpath):
         keyname = deepKeys[x]
         #keytype = keyname.split(os.sep)[1]
         match.update({"location{:02d}".format(idx + 1): os.path.join(z_img_dir, keyname)})
-        print(os.path.join(z_img_dir, keyname) )
     return render_template("mirror_display.html", title="Smart Mirror App", match=match, imgfile=imgfile)
 
 

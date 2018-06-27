@@ -27,7 +27,7 @@ deepDict = DeepFashion("Top")
 zDict = pickle.load(open("/home/ubuntu/smartfit/models/zdirectory.p", "rb"))
 global deepKeys
 # deepKeys = [keyname for keyname in deepDict.keys()]
-deepKeys = [zDict[img] for img in zDict.keys()]
+deepKeys = [os.sep.join(['womenless',zDict[img]]) for img in zDict.keys()]
 
 global allFeatures
 # allFeatures = np.load("features/u_current_feature_vector.npy")

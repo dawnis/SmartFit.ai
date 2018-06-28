@@ -99,7 +99,7 @@ def smart_mirror():
     if not os.path.isfile(virtual_fullpath):
         #TODO: JS TIMER
         #infer(fashion, person, virtual_fullpath)
-	virtual_fullpath = fashion
+        virtual_fullpath = fashion
         print("Did not find!")
     imgfile = {"fashion": fashion, "person": person, "virtual":  virtual_fullpath}
     feature_vector_main = encoder_predict(aimg)

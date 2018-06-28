@@ -95,12 +95,10 @@ def smart_mirror():
     fashion_fname = fashion.split(os.sep)[-1][:-4]
     virtual_fit_fname = "_".join([person_fname, fashion_fname]) + ".png"
     virtual_fullpath = os.sep.join([vfit_base_dir, virtual_fit_fname])
-    print(virtual_fullpath)
     if not os.path.isfile(os.path.join("flaskapp/static", virtual_fullpath)):
         # TODO: JS TIMER
         # infer(fashion, person, virtual_fullpath)
         virtual_fullpath = fashion
-        print("Did not find!")
     imgfile = {"fashion": fashion, "person": person, "virtual": virtual_fullpath}
     feature_vector_main = encoder_predict(aimg)
     scores = [similarity_function(feature_vector_main, partner) for partner in allFeatures]

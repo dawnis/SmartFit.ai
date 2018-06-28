@@ -90,7 +90,7 @@ def smart_mirror():
     z_img_dir = "z_img"
     # z_img_dir = "deepFashion"
     aimg = os.path.join("flaskapp/static", fashion)
-    vfit_base_dir = "flaskapp/static/virtual_fit"
+    vfit_base_dir = "virtual_fit"
     person_fname = person.split(os.sep)[-1][:-4]
     fashion_fname = fashion.split(os.sep)[-1][:-4]
     virtual_fit_fname = "_".join([person_fname, fashion_fname]) + ".png"
@@ -104,9 +104,9 @@ def smart_mirror():
     feature_vector_main = encoder_predict(aimg)
     scores = [similarity_function(feature_vector_main, partner) for partner in allFeatures]
     closest = np.argsort(np.array(scores))
-    topn=[closest[0]]
-    scoresCurrent = scores[0]
-    for item in closest[:100]:
+    topn=[]
+    scoresCurrent = scores[closest[0]]
+    for item in closest[5:2000]:
         #eliminate items that are too close of a match
        if scores[item] - scoresCurrent > 1:
            topn.append(item)

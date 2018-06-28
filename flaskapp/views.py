@@ -99,6 +99,7 @@ def smart_mirror():
     if not os.path.isfile(virtual_fullpath):
         #TODO: JS TIMER
         #infer(fashion, person, virtual_fullpath)
+	virtual_fullpath = fashion
         print("Did not find!")
     imgfile = {"fashion": fashion, "person": person, "virtual":  virtual_fullpath}
     feature_vector_main = encoder_predict(aimg)
@@ -112,7 +113,7 @@ def smart_mirror():
            topn.append(item)
            scoresCurrent = scores[item]
     match = {}
-    for idx, x in enumerate(topn[:4]):
+    for idx, x in enumerate(topn[:8]):
         keyname = deepKeys[x]
         # keytype = keyname.split(os.sep)[1]
         match.update({"location{:02d}".format(idx + 1): os.path.join(z_img_dir, keyname)})

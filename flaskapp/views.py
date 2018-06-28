@@ -99,8 +99,15 @@ def smart_mirror(fashion, person):
     feature_vector_main = encoder_predict(aimg)
     scores = [similarity_function(feature_vector_main, partner) for partner in allFeatures]
     closest = np.argsort(np.array(scores))
+    topn=[closest[0]]
+    scoresCurrent = scores[0]
+    for item in closest[:100]:
+        #eliminate items that are too close of a match
+       if scores[item] - scoresCurrent > 1:
+           topn.append(item)
+           scoresCurrent = scores[item]
     match = {}
-    for idx, x in enumerate(closest[:20]):
+    for idx, x in enumerate(topn[:4]):
         keyname = deepKeys[x]
         # keytype = keyname.split(os.sep)[1]
         match.update({"location{:02d}".format(idx + 1): os.path.join(z_img_dir, keyname)})

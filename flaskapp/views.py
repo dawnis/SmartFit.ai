@@ -99,7 +99,7 @@ def smart_mirror():
     if not os.path.isfile(os.path.join("flaskapp/static", virtual_fullpath)):
         # TODO: JS TIMER
         # infer(fashion, person, virtual_fullpath)
-        if os.sep.join('womenless', fashion_fname+".jpg") in deepKeys:
+        if os.sep.join(['womenless', fashion_fname+".jpg"]) in deepKeys:
             virtual_fullpath = "".join(['z_img/women_top', fashion_fname[:-2], '_0.jpg'])
         else:
             virtual_fullpath = fashion

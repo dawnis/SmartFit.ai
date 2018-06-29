@@ -101,8 +101,10 @@ def smart_mirror():
         # infer(fashion, person, virtual_fullpath)
         if os.sep.join(['womenless', fashion_fname+".jpg"]) in deepKeys:
             virtual_fullpath = "".join(['z_img/women_top/', fashion_fname[:-2], '_0.jpg'])
+            person = ""
         else:
             virtual_fullpath = fashion
+            fashion = ""
     imgfile = {"fashion": fashion, "person": person, "virtual": virtual_fullpath}
     feature_vector_main = encoder_predict(aimg)
     scores = [similarity_function(feature_vector_main, partner) for partner in allFeatures]

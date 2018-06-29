@@ -21,8 +21,11 @@
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
     <h5 class="my-0 mr-md-auto font-weight-normal">Smart Fit Team @ Insight Data Science</h5>
     <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="https://docs.google.com/presentation/d/e/2PACX-1vQYEp3DV0C_Um-hAQKZblZPdgOQ5hKeSCJ6FrOjkUzCiRnyB_Nv-J3J5qjL73Oa2dVvtdFEVZmIwSxQ/pub?start=false&loop=false&delayms=3000">Recommender Service</a>
-        <a class="p-2 text-dark" href="https://drive.google.com/open?id=146ZfU9597FB8AG4J9jFxlkXjaEJga5XEbI_EbsG0Jxw">Virtual Try-On</a>
+        <a class="p-2 text-dark"
+           href="https://docs.google.com/presentation/d/e/2PACX-1vQYEp3DV0C_Um-hAQKZblZPdgOQ5hKeSCJ6FrOjkUzCiRnyB_Nv-J3J5qjL73Oa2dVvtdFEVZmIwSxQ/pub?start=false&loop=false&delayms=3000">Recommender
+            Service</a>
+        <a class="p-2 text-dark" href="https://drive.google.com/open?id=146ZfU9597FB8AG4J9jFxlkXjaEJga5XEbI_EbsG0Jxw">Virtual
+            Try-On</a>
     </nav>
     <a class="btn btn-outline-primary" href="#foot">Contact</a>
 </div>
@@ -42,12 +45,20 @@
                 <img src="{{url_for('static', filename = imgfile.person)}}" , height="400">
                 <br><br><br>
                 <div class="lg-col-12">
-                    <a href="{{ url_for('change_model', fashion=imgfile.fashion, person=imgfile.person) }}"
-                       class="btn btn-lg btn-block btn-outline-primary">
-                        Change Model</a>
-                    <a href="{{ url_for('smart_mirror', fashion=imgfile.fashion, person=imgfile.person) }}"
-                       class="btn btn-lg btn-block btn-outline-primary">
-                        Fitting Room</a>
+                    <table>
+                        <tr>
+                            <td>
+                                <a href="{{ url_for('change_model', fashion=imgfile.fashion, person=imgfile.person) }}"
+                                   class="btn btn-lg btn-block btn-outline-secondary">
+                                    Change Model</a>
+                            </td>
+                            <td>
+                                <a href="{{ url_for('smart_mirror', fashion=imgfile.fashion, person=imgfile.person) }}"
+                                   class="btn btn-lg btn-block btn-outline-primary">
+                                    Fitting Room</a>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
@@ -58,7 +69,7 @@
             <div class="card-body">
                 <div class="row">
                     <form action="/upload" method="POST" enctype="multipart/form-data">
-                        <img src="{{url_for('static', filename = imgfile.fashion)}}", height="200">
+                        <img src="{{url_for('static', filename = imgfile.fashion)}}" , height="200">
                         <br><br>
                         <input type="file" name="img_file_path">
                         <input type="submit" value="Upload">
@@ -73,16 +84,22 @@
                         <tbody>
                         <tr>
 
-                            <td><a href="{{ url_for('smart_mirror', fashion='z_img/womenless/016498_1.jpg', person=imgfile.person) }}">
-                                <img src=" {{url_for('static', filename = 'z_img/womenless/016498_1.jpg')}}" , height="100">
-                            </a></td>
+                            <td>
+                                <a href="{{ url_for('smart_mirror', fashion='z_img/womenless/016498_1.jpg', person=imgfile.person) }}">
+                                    <img src=" {{url_for('static', filename = 'z_img/womenless/016498_1.jpg')}}" ,
+                                         height="100">
+                                </a></td>
 
-                            <td><a href="{{ url_for('smart_mirror', fashion='z_img/womenless/015008_1.jpg', person=imgfile.person) }}">
-                                <img src="{{url_for('static', filename = 'z_img/womenless/015008_1.jpg')}}" , height="100">
-                            </a></td>
-                            <td><a href="{{ url_for('smart_mirror', fashion='z_img/womenless/014367_1.jpg', person=imgfile.person) }}">
-                                <img src=" {{url_for('static', filename = 'z_img/womenless/014367_1.jpg')}}" , height="100">
-                            </a></td>
+                            <td>
+                                <a href="{{ url_for('smart_mirror', fashion='z_img/womenless/015008_1.jpg', person=imgfile.person) }}">
+                                    <img src="{{url_for('static', filename = 'z_img/womenless/015008_1.jpg')}}" ,
+                                         height="100">
+                                </a></td>
+                            <td>
+                                <a href="{{ url_for('smart_mirror', fashion='z_img/womenless/014367_1.jpg', person=imgfile.person) }}">
+                                    <img src=" {{url_for('static', filename = 'z_img/womenless/014367_1.jpg')}}" ,
+                                         height="100">
+                                </a></td>
 
                         </tr>
                         <tr>

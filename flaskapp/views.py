@@ -100,7 +100,7 @@ def smart_mirror():
         # TODO: JS TIMER
         # infer(fashion, person, virtual_fullpath)
         if os.sep.join(['womenless', fashion_fname+".jpg"]) in deepKeys:
-            virtual_fullpath = "".join(['z_img/women_top', fashion_fname[:-2], '_0.jpg'])
+            virtual_fullpath = "".join(['z_img/women_top/', fashion_fname[:-2], '_0.jpg'])
         else:
             virtual_fullpath = fashion
     imgfile = {"fashion": fashion, "person": person, "virtual": virtual_fullpath}

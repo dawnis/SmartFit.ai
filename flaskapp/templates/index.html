@@ -42,6 +42,9 @@
                 <img src="{{url_for('static', filename = imgfile.person)}}" , height="400">
                 <br><br><br>
                 <div class="lg-col-12">
+                    <a href="{{ url_for('change_model', fashion=imgfile.fashion, person=imgfile.person) }}"
+                       class="btn btn-lg btn-block btn-outline-primary">
+                        Change Model</a>
                     <a href="{{ url_for('smart_mirror', fashion=imgfile.fashion, person=imgfile.person) }}"
                        class="btn btn-lg btn-block btn-outline-primary">
                         Fitting Room</a>

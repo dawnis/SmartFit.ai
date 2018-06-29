@@ -79,7 +79,8 @@ def encoder_predict(image_full_path):
 @app.route('/')
 @app.route('/index')
 def index():
-    imgfile = {"person": "images/model_landing.jpg", "fashion": "z_img/womenless/000102_1.jpg"}
+    #imgfile = {"person": "images/model_landing.jpg", "fashion": "z_img/womenless/000102_1.jpg"}
+    imgfile = {"person": "images/example_person.jpg", "fashion": "z_img/womenless/000102_1.jpg"}
     return render_template("index.html", title="Home", imgfile=imgfile)
 
 
@@ -139,6 +140,15 @@ def upload_image():
 
     return
 
+@app.route('/change_model', methods=['GET'])
+def change_model():
+    fashion = request.args.get('fashion')
+    person = request.args.get('person')
+    if person == "images/model_landing.jpg":
+        imgfile = {"person": "images/example_person.jpg", "fashion": "z_img/womenless/000102_1.jpg"}
+    else:
+        imgfile = {"person": "images/model_landing.jpg", "fashion": fashion}
+    return render_template("index.html", title="Home", imgfile=imgfile)
 
 # Run inference
 def infer(input_person, input_clothes, virtual_fit_output):

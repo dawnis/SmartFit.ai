@@ -113,7 +113,7 @@ def smart_mirror():
     scoresCurrent = scores[closest[0]]
     for item in closest[5:2000]:
         # eliminate items that are too close of a match
-        if scores[item] - scoresCurrent > 1:
+        if scores[item] - scoresCurrent > .1:
             topn.append(item)
             scoresCurrent = scores[item]
     match = {}

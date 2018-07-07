@@ -111,9 +111,9 @@ def smart_mirror():
     closest = np.argsort(np.array(scores))
     topn = []
     scoresCurrent = scores[closest[0]]
-    for item in closest[5:2000]:
+    for item in closest[4:2000]:
         # eliminate items that are too close of a match
-        if scores[item] - scoresCurrent > .1:
+        if scores[item] - scoresCurrent > 1:
             topn.append(item)
             scoresCurrent = scores[item]
     match = {}

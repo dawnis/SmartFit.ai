@@ -4,7 +4,7 @@
 SmartFit.ai (http://smartfit.ai) is a virtual try-on and recommender service that I contributed to at Insight Data Science 2018 Session B. I developed the Flask app and recommender service, while Rohan Bhandari developed the virtual try-on, and Steve Xie acted as Product Manager. 
 
 ## Autoencoder Model
-For a detailed look at the construction and training of the autoencoder model, please check out notebooks/Convolutional Autoencoder Model.ipynb
+For a detailed look at the construction and training of the autoencoder model, please check out <a href="https://github.com/dawnis/SmartFit.ai/blob/master/notebooks/Convolutional%20Autoencoder%20Model.ipynb">notebooks/Convolutional Autoencoder Model.ipynb</a>
 
 ## Model Validation
-To see how the recommender system was validated, please check out notebooks/Validation_of_Recommender_System.ipynb
+To see how the recommender system was validated, please check out <a href="https://github.com/dawnis/SmartFit.ai/blob/master/notebooks/Validation_of_Recommender_System.ipynb">notebooks/Validation_of_Recommender_System.ipynb</a>

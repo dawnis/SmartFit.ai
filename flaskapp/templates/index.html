@@ -24,7 +24,8 @@
         <a class="p-2 text-dark"
            href="https://docs.google.com/presentation/d/e/2PACX-1vQYEp3DV0C_Um-hAQKZblZPdgOQ5hKeSCJ6FrOjkUzCiRnyB_Nv-J3J5qjL73Oa2dVvtdFEVZmIwSxQ/pub?start=false&loop=false&delayms=3000">Recommender
             Service</a>
-        <a class="p-2 text-dark" href="https://docs.google.com/presentation/d/146ZfU9597FB8AG4J9jFxlkXjaEJga5XEbI_EbsG0Jxw/present#slide=id.gc6f80d1ff_0_0">Virtual
+        <a class="p-2 text-dark"
+           href="https://docs.google.com/presentation/d/146ZfU9597FB8AG4J9jFxlkXjaEJga5XEbI_EbsG0Jxw/present#slide=id.gc6f80d1ff_0_0">Virtual
             Try-On</a>
     </nav>
     <a class="btn btn-outline-primary" href="#foot">Contact</a>
@@ -44,7 +45,7 @@
             <div class="card-body">
                 <img src="{{url_for('static', filename = imgfile.person)}}" , height="400">
                 <br><br><br>
-                <div class="mb-xl-auto">
+                <div class="row text-center">
                     <table class="card-body">
                         <tr>
                             <td>
@@ -67,28 +68,32 @@
                 <h4 class="my-0 font-weight-normal">Current Fashion</h4>
             </div>
             <div class="card-body">
-                <div class="row mx-lg-auto">
+                <div class="form-row text-center">
                     <form action="/upload" method="POST" enctype="multipart/form-data">
                         <table class="card-body">
-                        <tbody>
-                        <tr><td colspan="2">
-                        <img src="{{url_for('static', filename = imgfile.fashion)}}" , height="200">
-                           </td> </tr>
-                        <tr><td>
-                            <!--<input type="file" name="img_file_path">-->
-                        </td>
-                            <td>
-                        <!--<input type="submit" value="Upload">-->
-                            </td>
-                        </tr>
-                        </tbody></table>
+                            <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    <img src="{{url_for('static', filename = imgfile.fashion)}}" , height="200">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <!--<input type="file" name="img_file_path">-->
+                                </td>
+                                <td>
+                                    <!--<input type="submit" value="Upload">-->
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </form>
                 </div>
                 <br><br><br>
                 <div class="card-header">
                     <h4 class="my-0 font-weight-normal">Or Try These Examples</h4>
                 </div>
-                <div class="row align-content-lg-center">
+                <div class="row text-center">
                     <table class="card-body">
                         <tbody>
                         <tr>
